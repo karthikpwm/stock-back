@@ -31,13 +31,13 @@ exports.delete = async(req, res) => {
   }
 
 };
-exports.update = async (req,res) => {
-  if(req.body.constructor === Object && Object.keys(req.body).length === 0){
-    throw '400:Parameter not Valid'
-  }
-  const result = await analytic.update( req.body )
-    res.json({
-      message: `analytic updated successfully`,
-      insert_id : result
-    })
-}
+// exports.update = async (req,res) => {
+//   if(req.body.constructor === Object && Object.keys(req.body).length === 0){
+//     throw '400:Parameter not Valid'
+//   }
+//   const result = await analytic.update( req.body )
+//     res.json({
+//       message: `analytic updated successfully`,
+//       insert_id : result
+//     })
+// }

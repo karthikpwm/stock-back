@@ -46,20 +46,20 @@ exports.insert = async ( param ) => {
   }
 }
 
-exports.update = async(param) =>{
-  const con = await db.getConnection()
-  try {
+// exports.update = async(param) =>{
+//   const con = await db.getConnection()
+//   try {
 
-    let sql = (`UPDATE analytic set weightage = ? where analytic_id = ?`, 
-    [param.weightage,param.analytic_id])
-    const result =  await db.query(sql)
-    return true;
-  }
-  catch(e){
-    throw e
-  }
+//     let sql = (`UPDATE analytic set weightage = ? where analytic_id = ?`, 
+//     [param.weightage,param.analytic_id])
+//     const result =  await db.query(sql)
+//     return true;
+//   }
+//   catch(e){
+//     throw e
+//   }
 
-}
+// }
 
 // exports.findOne = async (customer_id) => {
 //   try {

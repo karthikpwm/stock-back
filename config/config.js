@@ -4,11 +4,11 @@ const mysql = require('mysql2/promise');
 
 //local mysql db connection
 const db = mysql.createPool({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
+  host     : 'remotemysql.com',
+  user     : '4RMLmHAeTf',
+  password : 'dc6sLoDfQ9',
   connectionLimit: 50,
-  database : 'stock',
+  database : '4RMLmHAeTf',
   dateStrings: true,
 });
 

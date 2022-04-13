@@ -45,7 +45,36 @@ exports.insert = async ( param ) => {
     con.close()
   }
 }
+exports.postUploadRecord = async(params) =>{
+  try {
+    await params.bulkData.forEach( async (param) => {
+      let sql = `UPDATE analytic set weightage = ? where analytic_id = ?`
+      const result =  await db.query(sql, 
+        [param.weightage,param.analytic_id])      
+      console.log(result)
+    });
+    return true;
+  }
+  catch(e){
+    throw e
+  }
 
+}
+exports.updateRecord = async ( analytic_id ,param) =>{
+  const con = await db.getConnection()
+  try {
+    await con.beginTransaction();
+    const result =  await con.query("UPDATE analytic SET name = ?, weightage = ?, symbol = ? WHERE analytic_id = ? ", 
+      [param.name, param.weightage, param.symbol, analytic_id])
+    await con.commit();
+    return result;
+  } catch ( err ) {
+    await con.rollback();
+    throw err;
+  } finally {
+    con.close()
+  }
+}
 // exports.update = async(param) =>{
 //   const con = await db.getConnection()
 //   try {

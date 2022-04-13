@@ -1,7 +1,7 @@
 'user strict';
 
 const mysql = require('mysql2/promise');
-
+console.log(process.env.MYSQL_HOST)
 //local mysql db connection
 const db = mysql.createPool({
   host     : process.env.MYSQL_HOST,

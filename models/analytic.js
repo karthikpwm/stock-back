@@ -46,17 +46,23 @@ exports.insert = async ( param ) => {
   }
 }
 exports.postUploadRecord = async(params) =>{
+  const con = await db.getConnection()
   try {
+    await con.beginTransaction();
     await params.bulkData.forEach( async (param) => {
       let sql = `UPDATE analytic set weightage = ? where analytic_id = ?`
-      const result =  await db.query(sql, 
+      const result =  await con.query(sql, 
         [param.weightage,param.analytic_id])      
-      console.log(result)
-    });
-    return true;
+      });
+
+      await con.commit();
+      return true;
   }
-  catch(e){
-    throw e
+  catch ( err ) {
+    await con.rollback();
+    throw err;
+  } finally {
+    con.close()
   }
 
 }

@@ -24,21 +24,17 @@ exports.delete = async(req, res) => {
   }
 
   const result = await analytic.delete(req.params)
-  if(result === true) {
     res.json({
       message : 'record delete successfully'
     })
-  }
 
 };
 exports.uploadRecord = async (req,res) => {
 
   const result = await analytic.uploadRecord()
-  if(result === true) {
     res.json({
       message: `analytic updated successfully`,
     })
-  }
 }
 
 exports.postUploadRecord = async (req,res) => {
@@ -46,11 +42,9 @@ exports.postUploadRecord = async (req,res) => {
     throw '400:Parameter not Valid'
   }  
   const result = await analytic.postUploadRecord(req.body)
-  if(result === true) {
     res.json({
       message: `analytic updated successfully`,
     })
-  }
 }
 
 exports.updateRecord = async (req,res) => {
@@ -58,11 +52,9 @@ exports.updateRecord = async (req,res) => {
     throw '400:Parameter not Valid'
   }
   const result = await analytic.updateRecord(req.params.analytic_id, req.body)
-  if(result === true) {
     res.json({
       message: `analytic updated successfully`,
     })
-  }
 
 }
 

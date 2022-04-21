@@ -1,19 +1,19 @@
 const {db} = require('../config/config')
 
-exports.getAll = async () => {
+exports.getAll = async (portfolio_id) => {
   try {
-    let sql = `SELECT analytic_id, name, weightage,symbol FROM analytic`; 
-    const result =  await db.query(sql)
+    let sql = `SELECT analytic_id, name, weightage,symbol FROM analytic where portfolio_id = ?`; 
+    const result =  await db.query(sql,[portfolio_id])
     return result[0];
   } catch (e) {
     throw e
   }
 }
 
-exports.totalWeightage = async () => {
+exports.totalWeightage = async (portfolio_id) => {
   try {
-    let sql = `SELECT sum(weightage) as totalWeightage  FROM analytic`; 
-    const result =  await db.query(sql)
+    let sql = `SELECT sum(weightage) as totalWeightage  FROM analytic where portfolio_id = ?`; 
+    const result =  await db.query(sql,[portfolio_id])
     return result[0][0]['totalWeightage'];
   } catch (e) {
     throw e
@@ -34,8 +34,8 @@ exports.insert = async ( param ) => {
   const con = await db.getConnection()
   try {
     await con.beginTransaction();
-    const result =  await con.query("INSERT INTO analytic (name, weightage, symbol) VALUE ( ?, ?, ? ) ", 
-      [ param.name, param.weightage, param.symbol ])
+    const result =  await con.query("INSERT INTO analytic (name,portfolio_id, weightage, symbol) VALUE ( ?, ?, ?, ? ) ", 
+      [ param.name,param.portfolio, param.weightage, param.symbol ])
     await con.commit();
     return result[0].insertId;
   } catch ( err ) {

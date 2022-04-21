@@ -2,8 +2,11 @@ const analytic= require('./../models/analytic')
 
 
 exports.getAll = async (req, res) => {
-  let total = await analytic.totalWeightage(); 
-  let result = await analytic.getAll()
+  if(Object.keys(req.params).length === 0 && req.params.portfolio_id === undefined){
+    throw '400:Parameter not Valid'
+  }
+  let total = await analytic.totalWeightage(req.params.portfolio_id); 
+  let result = await analytic.getAll(req.params.portfolio_id)
   res.json({total : total, data : result })
 };
 

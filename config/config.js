@@ -10,6 +10,14 @@ const db = mysql.createPool({
   connectionLimit: 50,
   database : process.env.MYSQL_DB,
   dateStrings: true,
+
+  // host     : 'localhost',
+  // user     : 'root',
+  // password : '',
+  // connectionLimit: 50,
+  // database : 'stock',
+  // dateStrings: true,
+
 });
 
 const withTransaction = async ( db, callback ) => {

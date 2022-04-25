@@ -1,11 +1,26 @@
 const express = require( 'express' )
+const fileUpload = require('express-fileupload');
 var cors = require('cors')
 require('dotenv').config()
 const app = express();
 
+app.use(express.static('public'));
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(fileUpload());
+
+
+app.post('/upload', (req, res) => {
+
+console.log(req.body.excelData)
+res.send();
+})
+
+app.post('/fetch',(req,res)=>{
+  console.log(req.body)
+  res.send();
+})
 
 // Bring in the routes
 // localhost

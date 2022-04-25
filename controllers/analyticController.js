@@ -10,6 +10,12 @@ exports.getAll = async (req, res) => {
   res.json({total : total, data : result })
 };
 
+exports.fetch = async (req, res) => {
+  let total = await analytic.totalWe(); 
+  let result = await analytic.fetch()
+  res.json({total : total, data : result })
+};
+
 exports.addRecord = async (req, res) => {
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
       throw '400:Parameter not Valid'
@@ -21,6 +27,19 @@ exports.addRecord = async (req, res) => {
       insert_id : result
     })
 };
+
+exports.upexcel = async (req, res) => {
+  if(req.body.constructor === Object && Object.keys(req.body).length === 0){
+    throw '400:Parameter not Valid'
+  }
+
+  const result = await analytic.insert( req.body )
+  res.json({
+    message: `analytic insert successfully`,
+    insert_id : result
+  })
+};
+
 exports.delete = async(req, res) => {
   if(Object.keys(req.params).length === 0 && req.params.analytic_id === undefined){
     throw '400:Parameter not Valid'
@@ -47,6 +66,17 @@ exports.postUploadRecord = async (req,res) => {
   const result = await analytic.postUploadRecord(req.body)
     res.json({
       message: `analytic updated successfully`,
+    })
+}
+
+exports.upload = async (req,res) => {
+  if(req.body.constructor === Object &&  Object.keys(req.body).length === 0){
+    throw '400:Parameter not Valid'
+  }  
+  const result = await analytic.upload(req.body)
+    res.json({
+      message: `analytic updated successfully`,
+      insert_id : result
     })
 }
 

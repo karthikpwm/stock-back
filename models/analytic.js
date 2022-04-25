@@ -1,3 +1,4 @@
+const { NULL } = require('mysql/lib/protocol/constants/types');
 const {db} = require('../config/config')
 
 exports.getAll = async (portfolio_id) => {
@@ -9,6 +10,27 @@ exports.getAll = async (portfolio_id) => {
     throw e
   }
 }
+
+exports.fetch = async () => {
+  try {
+    let sql = `SELECT analytic_id,portfolio_id, name, weightage,symbol FROM analytic`; 
+    const result =  await db.query(sql)
+    return result[0];
+  } catch (e) {
+    throw e
+  }
+}
+
+exports.totalWe = async () => {
+  try {
+    let sql = `SELECT sum(weightage) as totalWe  FROM analytic`; 
+    const result =  await db.query(sql)
+    return result[0][0]['totalWe'];
+  } catch (e) {
+    throw e
+  }
+}
+
 
 exports.totalWeightage = async (portfolio_id) => {
   try {
@@ -35,7 +57,7 @@ exports.insert = async ( param ) => {
   try {
     await con.beginTransaction();
     const result =  await con.query("INSERT INTO analytic (name,portfolio_id, weightage, symbol) VALUE ( ?, ?, ?, ? ) ", 
-      [ param.name,param.portfolio, param.weightage, param.symbol ])
+      [ param.name,param.portfolio_id, param.weightage, param.symbol ])
     await con.commit();
     return result[0].insertId;
   } catch ( err ) {
@@ -45,6 +67,24 @@ exports.insert = async ( param ) => {
     con.close()
   }
 }
+
+
+exports.upexcel = async ( param ) => {
+  const con = await db.getConnection()
+  try {
+    await con.beginTransaction();
+    const result =  await con.query("INSERT INTO analytic (portfolio_id,name, weightage, symbol) VALUE ( ?, ?, ?, ? ) ", 
+      [ param.portfolio_id,param.name, param.weightage, param.symbol ])
+    await con.commit();
+    return result[0].insertId;
+  } catch ( err ) {
+    await con.rollback();
+    throw err;
+  } finally {
+    con.close()
+  }
+}
+
 exports.postUploadRecord = async(params) =>{
   const con = await db.getConnection()
   try {
@@ -66,6 +106,51 @@ exports.postUploadRecord = async(params) =>{
   }
 
 }
+
+exports.upload= async(params) =>{
+  // const con = await db.getConnection()
+  try {
+    // await con.beginTransaction();
+    // await params.excelData.forEach( async (param) => {
+    //   let sql=  `insert INTO analytic (portfolio_id,name, weightage, symbol) VALUE ( ?, ?, ?, ? )`
+    //   const result =  await con.query(sql,
+    //      [param.portfolio_id,param.name,param.weightage,param.symbol])
+              
+    //   });
+    //   await con.commit();
+    await params.excelData.forEach( async (param) => {
+      let sql=  `SELECT * FROM analytic WHERE portfolio_id = ? and symbol = ? LIMIT 1`;
+      const result =  await db.query(sql, [param.portfolio_id,param.symbol])   
+      console.log(result[0][0]);           
+      const analytic_id = result[0][0] != undefined ? result[0][0]['analytic_id'] : null;
+     console.log('ansfasf',analytic_id)
+      // await con.beginTransaction();
+      if(!analytic_id) {
+        console.log('insert ')
+        let sql=  `insert INTO analytic (portfolio_id,name, weightage, symbol) VALUE ( ?, ?, ?,? )`
+        await db.query(sql,
+          [param.portfolio_id,param.name,param.weightage,param.symbol])
+      } else {
+        let sql=  `UPDATE analytic SET weightage = ? WHERE analytic_id = ?`
+        await db.query(sql,
+          [param.weightage,analytic_id])
+      }
+      // await con.commit();
+                
+    });
+
+
+    return true;
+  }
+  catch ( err ) {
+    // await con.rollback();
+    throw err;
+  } finally {
+    // con.close()
+  }
+
+}
+
 exports.updateRecord = async ( analytic_id ,param) =>{
   const con = await db.getConnection()
   try {

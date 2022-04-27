@@ -78,6 +78,7 @@ exports.upexcel = async ( param ) => {
     await con.commit();
     return result[0].insertId;
   } catch ( err ) {
+    console.log(err)
     await con.rollback();
     throw err;
   } finally {

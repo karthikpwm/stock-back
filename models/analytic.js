@@ -69,22 +69,22 @@ exports.insert = async ( param ) => {
 }
 
 
-exports.upexcel = async ( param ) => {
-  const con = await db.getConnection()
-  try {
-    await con.beginTransaction();
-    const result =  await con.query("INSERT INTO analytic (portfolio_id,name, weightage, symbol) VALUE ( ?, ?, ?, ? ) ", 
-      [ param.portfolio_id,param.name, param.weightage, param.symbol ])
-    await con.commit();
-    return result[0].insertId;
-  } catch ( err ) {
-    console.log(err)
-    await con.rollback();
-    throw err;
-  } finally {
-    con.close()
-  }
-}
+// exports.upexcel = async ( param ) => {
+//   const con = await db.getConnection()
+//   try {
+//     await con.beginTransaction();
+//     const result =  await con.query("INSERT INTO analytic (portfolio_id,name, weightage, symbol) VALUE ( ?, ?, ?, ? ) ", 
+//       [ param.portfolio_id,param.name, param.weightage, param.symbol ])
+//     await con.commit();
+//     return result[0].insertId;
+//   } catch ( err ) {
+//     console.log(err)
+//     await con.rollback();
+//     throw err;
+//   } finally {
+//     con.close()
+//   }
+// }
 
 exports.postUploadRecord = async(params) =>{
   const con = await db.getConnection()

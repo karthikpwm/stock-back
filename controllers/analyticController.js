@@ -28,17 +28,17 @@ exports.addRecord = async (req, res) => {
     })
 };
 
-exports.upexcel = async (req, res) => {
-  if(req.body.constructor === Object && Object.keys(req.body).length === 0){
-    throw '400:Parameter not Valid'
-  }
+// exports.upexcel = async (req, res) => {
+//   if(req.body.constructor === Object && Object.keys(req.body).length === 0){
+//     throw '400:Parameter not Valid'
+//   }
 
-  const result = await analytic.insert( req.body )
-  res.json({
-    message: `analytic insert successfully`,
-    insert_id : result
-  })
-};
+//   const result = await analytic.insert( req.body )
+//   res.json({
+//     message: `analytic insert successfully`,
+//     insert_id : result
+//   })
+// };
 
 exports.delete = async(req, res) => {
   if(Object.keys(req.params).length === 0 && req.params.analytic_id === undefined){
@@ -51,13 +51,13 @@ exports.delete = async(req, res) => {
     })
 
 };
-exports.uploadRecord = async (req,res) => {
+// exports.uploadRecord = async (req,res) => {
 
-  const result = await analytic.uploadRecord()
-    res.json({
-      message: `analytic updated successfully`,
-    })
-}
+//   const result = await analytic.uploadRecord()
+//     res.json({
+//       message: `analytic updated successfully`,
+//     })
+// }
 
 exports.postUploadRecord = async (req,res) => {
   if(Object.keys(req.body).length === 0){
@@ -74,6 +74,17 @@ exports.upload = async (req,res) => {
     throw '400:Parameter not Valid'
   }  
   const result = await analytic.upload(req.body)
+    res.json({
+      message: `analytic updated successfully`,
+      insert_id : result
+    })
+}
+
+exports.uploadnse = async (req,res) => {
+  if(req.body.constructor === Object &&  Object.keys(req.body).length === 0){
+    throw '400:Parameter not Valid'
+  }  
+  const result = await analytic.uploadnse(req.body)
     res.json({
       message: `analytic updated successfully`,
       insert_id : result

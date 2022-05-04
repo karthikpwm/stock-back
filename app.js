@@ -1,21 +1,25 @@
 const express = require( 'express' )
 const fileUpload = require('express-fileupload');
+var bodyParser = require('body-parser')
 var cors = require('cors')
 require('dotenv').config()
 const app = express();
 
 app.use(express.static('public'));
 app.use(cors())
-app.use(express.json())
+//app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(fileUpload());
 
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
+app.use(express.json());
 
-app.post('/upload', (req, res) => {
+// app.post('/uploadnse', (req, res) => {
 
-console.log(req.body.excelData)
-res.send();
-})
+// console.log(req.body.excelData)
+// res.send();
+// })
 
 app.post('/fetch',(req,res)=>{
   console.log(req.body)

@@ -12,7 +12,7 @@ exports.getAll = async (portfolio_id) => {
 
 exports.fetch = async () => {
   try {
-    let sql = `SELECT * FROM nse where series ='EQ' OR series = 'BE'`; 
+    let sql = `SELECT * FROM nse`; 
     const result =  await db.query(sql)
     return result[0];
   } catch (e) {
@@ -22,7 +22,7 @@ exports.fetch = async () => {
 
 exports.totalWe = async () => {
   try {
-    let sql = `SELECT sum(close) as totalWe  FROM nse`; 
+    let sql = `SELECT sum(prevclose) as totalWe  FROM nse`; 
     const result =  await db.query(sql)
     return result[0][0]['totalWe'];
   } catch (e) {
@@ -223,7 +223,7 @@ exports.uploadnse= async(params) =>{
     let i = 0;
     let bulk_data = []
     for (const param of params.excelData) {
-      await bulk_data.push([ param.CLOSE,param.PREVCLOSE,param.SYMBOL,param.SERIES,param.ISIN ] )
+      await bulk_data.push([ param.CLOSE,param.PREVCLOSE,param.SYMBOL,param.SERIES,param.ISIN,param.TIMESTAMP ] )
       i = i+1;
 
     }
@@ -243,7 +243,7 @@ exports.uploadnse= async(params) =>{
       // await con.beginTransaction();
     //  if( !nse_id ) {
       //console.log('insert')
-      let sql=  `insert INTO nse (close, prevclose, symbol,series,isin) VALUES ?`
+      let sql=  `insert INTO nse (close, prevclose, symbol,series,isin,date) VALUES ?`
       //console.log(sql)
       await con.query(sql,
         [bulk_data])

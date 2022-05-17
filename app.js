@@ -21,10 +21,10 @@ app.use(express.json());
 // res.send();
 // })
 
-app.post('/fetch',(req,res)=>{
-  console.log(req.body)
-  res.send();
-})
+// app.post('/fetch',(req,res)=>{
+//   console.log(req.body)
+//   res.send();
+// })
 
 // Bring in the routes
 // localhost

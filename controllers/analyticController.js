@@ -102,6 +102,8 @@ exports.updateRecord = async (req,res) => {
 
 }
 
+
+
 // exports.update = async (req,res) => {
 //   if(req.body.constructor === Object && Object.keys(req.body).length === 0){
 //     throw '400:Parameter not Valid'

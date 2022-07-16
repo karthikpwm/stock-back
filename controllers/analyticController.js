@@ -16,6 +16,8 @@ exports.fetch = async (req, res) => {
   res.json({total : total, data : result })
 };
 
+
+
 exports.addRecord = async (req, res) => {
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
       throw '400:Parameter not Valid'

@@ -136,7 +136,7 @@ exports.upload= async(params) =>{
         let sql=  `UPDATE analytic SET weightage = ? WHERE analytic_id = ?`
         await db.query(sql,
           [param.weightage,analytic_id])
-      }
+      }  
       //await con.commit();               
     });
     return true;

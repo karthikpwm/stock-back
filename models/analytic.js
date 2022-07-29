@@ -71,7 +71,7 @@ exports.insert = async ( param ) => {
 
 exports.upexcel = async ( param ) => {
   const con = await db.getConnection()
-  try {
+  try {  
     await con.beginTransaction();
     const result =  await con.query("INSERT INTO analytic (portfolio_id,name, weightage, symbol) VALUE ( ?, ?, ?, ? ) ", 
       [ param.portfolio_id,param.name, param.weightage, param.symbol ])
